@@ -1,0 +1,84 @@
+.input-box { background: var(--panel-bg); border: 1px solid var(--border-color); border-radius: 24px; padding: 8px 12px; display: flex; align-items: flex-end; gap: 8px; }
+        #user-input { flex: 1; background: transparent; border: none; color: var(--text-main); font-size: 1rem; resize: none; max-height: 120px; min-height: 24px; padding: 8px 4px; outline: none; }
+        #send-btn { background: transparent; border: none; color: var(--accent); cursor: pointer; padding: 8px; }
+        #send-btn svg { width: 24px; height: 24px; fill: currentColor; transform: rotate(90deg); }
+    </style>
+</head>
+<body>
+
+    <!-- Экран загрузки (Логотип и Текст) -->
+    <div id="loader-screen">
+        <img src="logo.png" alt="Logo" class="loader-logo" onerror="this.style.display='none'">
+        <div class="loader-title">DiamondStudios</div>
+    </div>
+
+    <!-- Чат -->
+    <div id="app-screen">
+        <div class="header"><h1>diamondAI</h1></div>
+        <div class="chat-container" id="chat-container">
+            <div class="message ai">
+                <div class="avatar ai">D</div>
+                <div class="message-content">Привет! Я diamondAI от DiamondStudios. Чем помогу?</div>
+            </div>
+        </div>
+        <div class="input-wrapper">
+            <div class="input-box">
+                <textarea id="user-input" placeholder="Введите запрос..." rows="1" oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px'" onkeydown="if(event.key === 'Enter' && !event.shiftKey) { event.preventDefault(); sendMessage(); }"></textarea>
+                <button id="send-btn" onclick="sendMessage()">
+                    <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        window.onload = function() {
+            setTimeout(function() {
+                var loader = document.getElementById('loader-screen');
+                loader.style.opacity = '0';
+                setTimeout(function() {
+                    loader.style.display = 'none';
+                    document.getElementById('app-screen').style.display = 'flex';
+                }, 500);
+            }, 3500);
+        };
+
+        async function sendMessage() {
+            var input = document.getElementById('user-input');
+            var text = input.value.trim();
+            if (!text) return;
+
+            input.value = '';
+            input.style.height = ''; // Сброс высоты поля
+            addMessage('user', text);
+
+            try {
+                var response = await puter.ai.chat(text);
+                addMessage('ai', response);
+            } catch (e) {
+                addMessage('ai', 'Ошибка: ' + e.message);
+            }
+        }
+
+        function addMessage(role, text) {
+            var container = document.getElementById('chat-container');
+            var msg = document.createElement('div');
+            msg.className = 'message ' + role;
+            
+            var avatar = document.createElement('div');
+            avatar.className = 'avatar ' + role;
+            avatar.innerText = role === 'ai' ? 'D' : 'U';
+            
+            var content = document.createElement('div');
+            content.className = 'message-content';
+            content.innerText = text;
+
+            msg.appendChild(avatar);
+            msg.appendChild(content);
+            container.appendChild(msg);
+            
+            container.scrollTop = container.scrollHeight;
+        }
+    </script>
+</body>
+</html>
