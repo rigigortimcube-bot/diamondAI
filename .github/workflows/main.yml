@@ -8,8 +8,8 @@ jobs:
 
     - name: Fix libtinfo5
       run: |
-        wget https://mirrors.edge.kernel.org/ubuntu/pool/universe/n/ncurses/libtinfo5_6.3-2ubuntu0.1_amd64.deb
-        sudo dpkg -i libtinfo5_6.3-2ubuntu0.1_amd64.deb
+        wget http://archive.ubuntu.com/ubuntu/pool/universe/n/ncurses/libtinfo5_6.4-2_amd64.deb
+        sudo dpkg -i libtinfo5_6.4-2_amd64.deb
 
     - name: Create static folder
       run: |
