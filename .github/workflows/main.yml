@@ -6,11 +6,6 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
-    - name: Fix libtinfo5
-      run: |
-        wget http://archive.ubuntu.com/ubuntu/pool/universe/n/ncurses/libtinfo5_6.4-2_amd64.deb
-        sudo dpkg -i libtinfo5_6.4-2_amd64.deb
-
     - name: Create static folder
       run: |
         mkdir -p static
@@ -25,7 +20,7 @@ jobs:
       run: |
         pip install buildozer cython
         sudo apt update
-        sudo apt install -y git zip unzip openjdk-17-jdk autoconf libtool pkg-config zlib1g-dev libncurses5-dev libncursesw5-dev cmake libffi-dev libssl-dev
+        sudo apt install -y git zip unzip openjdk-17-jdk autoconf libtool pkg-config zlib1g-dev libncurses5 libncursesw5 cmake libffi-dev libssl-dev
         echo "[app]" > buildozer.spec
         echo "title = diamondAI" >> buildozer.spec
         echo "package.name = com.diamond.ai" >> buildozer.spec
